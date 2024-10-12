@@ -1,0 +1,56 @@
+[build-system]
+requires = [
+    "setuptools >= 73.0.0",
+    "wheel >= 0.44.0",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+version = "0.2024.9"
+name = "fastertags"
+requires-python = ">=3.12"
+
+[project.optional-dependencies]
+dev = [
+    "black == 24.8.0",
+    "beautifulsoup4 == 4.12.3",
+    "flake8 == 7.1.1",
+    "html5lib == 1.1",
+    "mypy == 1.11.2",
+    "pylint == 3.3.0",
+    "pytest == 8.3.3",
+    "pytest-asyncio == 0.24.0",
+    "pytest-random-order == 1.1.1",
+    "urllib3 == 2.2.3",
+]
+build = [
+    "build == 1.2.1",
+    "wheel == 0.44.0",
+]
+publish = [
+    "twine == 5.1.1",
+]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.package-data]
+"*" = ["py.typed"]
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.setuptools.packages.find]
+where = [
+    "src",
+]
+namespaces = false
+
+[tool.pytest.ini_options]
+minversion = "8.3.2"
+addopts = "--random-order -s --cov-fail-under=85 --cov-report html:coverage --cov=instrumntal"
+pythonpath = ["src"]
+testpaths = ["test"]
+python_files = ["test_*.py"]
+python_functions = ["test"]
+asyncio_mode = "auto"
