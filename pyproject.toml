@@ -9,11 +9,34 @@ build-backend = "setuptools.build_meta"
 version = "0.2024.9"
 name = "fastertags"
 requires-python = ">=3.12"
+authors = [
+  { name="Julian Bertram", email="tirednesscankill@warhog.net" },
+]
+description = "A small example package"
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Topic :: Internet :: WWW/HTTP :: Site Management",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Code Generators",
+    "Topic :: Text Processing :: Markup :: HTML",
+    "Typing :: Typed",
+]
+
+[project.urls]
+Homepage = "https://github.com/scravy/fastertags"
+Issues = "https://github.com/scravy/fastertags/issues"
 
 [project.optional-dependencies]
 dev = [
-    "black == 24.8.0",
     "beautifulsoup4 == 4.12.3",
+    "black == 24.8.0",
+    "build == 1.2.1",
     "flake8 == 7.1.1",
     "html5lib == 1.1",
     "mypy == 1.11.2",
@@ -21,14 +44,9 @@ dev = [
     "pytest == 8.3.3",
     "pytest-asyncio == 0.24.0",
     "pytest-random-order == 1.1.1",
-    "urllib3 == 2.2.3",
-]
-build = [
-    "build == 1.2.1",
-    "wheel == 0.44.0",
-]
-publish = [
     "twine == 5.1.1",
+    "urllib3 == 2.2.3",
+    "wheel == 0.44.0",
 ]
 
 [tool.setuptools]
