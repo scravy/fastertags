@@ -14,9 +14,11 @@ _RESERVED: Final[set[str]] = {
 
 _TR: Final = str.maketrans({"-": "_"})
 
-_ADDITIONAL_ARGS: Final[dict[str, dict[str, str | bool | None]]] = {
+_ADDITIONAL_ARGS: Final[
+    dict[str, dict[str, tuple[type[bool], bool | None] | tuple[type[str], str | None]]]
+] = {
     "style": {
-        "scoped": True,
+        "scoped": (bool, None),
     },
 }
 
@@ -88,6 +90,7 @@ if __name__ == "__main__":
     with open(parent / "elements.py", "w", encoding="utf8") as fe:
 
         def write(*args):
+            # noinspection PyTypeChecker
             print(*args, sep="\n", file=fe)
 
         write(
@@ -129,9 +132,11 @@ if __name__ == "__main__":
                 ),
                 *chain.from_iterable(
                     [
-                        f"    {_san(attr)}: {type(default_value).__name__} | None = {repr(default_value or None)},{_pylint(attr)}",
+                        f"    {_san(attr)}: {type_.__name__} | None = {repr(default_value or None)},{_pylint(attr)}",
                     ]
-                    for attr, default_value in _ADDITIONAL_ARGS.get(el, {}).items()
+                    for attr, (type_, default_value) in _ADDITIONAL_ARGS.get(
+                        el, {}
+                    ).items()
                 ),
                 "    **kwargs: str | bool | Collection[str] | None,",
                 "  ):",
@@ -158,7 +163,7 @@ if __name__ == "__main__":
                         f"    if {_san(attr)} is not None:",
                         f"      self['{attr}'] = {_san(attr)}",
                     ]
-                    for attr, default_value in _ADDITIONAL_ARGS.get(el, {}).items()
+                    for attr, _ in _ADDITIONAL_ARGS.get(el, {}).items()
                 ),
                 *(
                     []

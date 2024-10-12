@@ -2791,7 +2791,7 @@ class style(HTMLElement):
         tabindex: str | None = None,
         translate: str | None = None,
         writingsuggestions: str | None = None,
-        scoped: bool | None = True,
+        scoped: bool | None = None,
         **kwargs: str | bool | Collection[str] | None,
     ):
         super().__init__()

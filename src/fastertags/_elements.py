@@ -144,12 +144,13 @@ def write(
     *,
     oob_handler: Callable[[Any], None] | None,
     escape_html: bool = True,
+    path: tuple[str, ...] = (),
 ) -> None:
     for obj in objs:
         if isinstance(obj, str):
             f.write(htmlspecialchars(obj) if escape_html else obj)
         elif isinstance(obj, HTMLElement):
-            obj.print(f, oob_handler=oob_handler, end="")
+            obj.print(f, oob_handler=oob_handler, end="", path=path)
         elif isinstance(obj, Iterable):
             write(f, obj, oob_handler=oob_handler, escape_html=escape_html)
         elif callable(oob_handler):
@@ -162,7 +163,7 @@ type Renderable = HTMLElement | str | Iterable[Renderable]
 
 
 class HTMLElement:
-    EVENT_PREFIX = "hx-on:"
+    EVENT_HANDLER_PREFIX = "hx-on:"
     MINIMIZE_CSS = True
 
     EMPTY = False
@@ -192,6 +193,7 @@ class HTMLElement:
         *,
         oob_handler: Callable[[Any], None] | None = None,
         end: str = "\n",
+        path: tuple[str, ...] = (),
     ) -> None:
         if self.TAG == "html":
             file.write("<!DOCTYPE html>")
@@ -213,7 +215,7 @@ class HTMLElement:
         for ev, vals in self._onevent.items():
             if len(vals) == 1:
                 file.write(" ")
-                file.write(self.EVENT_PREFIX)
+                file.write(self.EVENT_HANDLER_PREFIX)
                 file.write(ev)
                 file.write('="')
                 file.write(htmlspecialchars(vals[0]))
@@ -224,7 +226,10 @@ class HTMLElement:
         if self.TAG == "style":
             # write the contents of a style tag.  We emulate the "scoped" attribute by wrapping
             # the contents of the style into a `@scope { ... }` (unless scoped is False).
-            if self._attvals.get("scoped", False):
+            is_scoped = self._attvals.get("scoped", None)
+            if is_scoped is None:
+                is_scoped = "head" not in path
+            if is_scoped:
                 file.write("@scope {")
             if self.MINIMIZE_CSS:
                 # simple minification of CSS
@@ -234,15 +239,16 @@ class HTMLElement:
                     file.write(ln.strip())
             else:
                 write(file, self._content, oob_handler=oob_handler, escape_html=False)
-            if self._attvals.get("scoped", False):
+            if is_scoped:
                 file.write("}")
         else:
-            # write out the contents.  If the tag is <script>  do not
+            # write out the contents.  If the tag is <script>, do not escape special characters.
             write(
                 file,
                 self._content,
                 oob_handler=oob_handler,
                 escape_html=self.TAG != "script",
+                path=path + (self.TAG,),
             )
         file.write("</")
         file.write(self.TAG)
