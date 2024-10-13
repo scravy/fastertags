@@ -1,12 +1,12 @@
 [build-system]
 requires = [
-    "setuptools >= 73.0.0",
+    "setuptools >= 75.1.0",
     "wheel >= 0.44.0",
 ]
 build-backend = "setuptools.build_meta"
 
 [project]
-version = "0.2024.9"
+version = "0.2024.10"
 name = "fastertags"
 requires-python = ">=3.12"
 authors = [
@@ -35,7 +35,7 @@ Issues = "https://github.com/scravy/fastertags/issues"
 [project.optional-dependencies]
 dev = [
     "beautifulsoup4 == 4.12.3",
-    "black == 24.8.0",
+    "black == 24.10.0",
     "build == 1.2.1",
     "flake8 == 7.1.1",
     "html5lib == 1.1",
@@ -65,9 +65,8 @@ where = [
 namespaces = false
 
 [tool.pytest.ini_options]
-minversion = "8.3.2"
+minversion = "8.3.3"
 addopts = "--random-order -s"
-# addopts = "--random-order -s --cov-fail-under=85 --cov-report html:coverage --cov=instrumntal"
 asyncio_default_fixture_loop_scope="function"
 pythonpath = ["src"]
 testpaths = ["test"]

@@ -27,7 +27,7 @@ yields
 
 Tags and Attributes are scraped from the WHATWG HTML Spec
 at [https://html.spec.whatwg.org/](https://html.spec.whatwg.org/).  Version numbers reflect when the scraping was done,
-the current version `0.2024.9` was taken in September 2024.
+the current version `0.2024.10` was taken in October 2024.
 
 ## HTMX
 
