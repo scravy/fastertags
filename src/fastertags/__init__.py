@@ -1,6 +1,7 @@
 from ._elements import (
     Event,
     HTMLElement,
+    NoEscape,
 )
 
 # codegen: begin[imports]
@@ -141,6 +142,7 @@ from .shorthands import viewport, charset, htmxflag, HTMXFlag, document
 __all__ = (
     "Event",
     "HTMLElement",
+    "NoEscape",
     "Header",
     "ContentType",
     "HTMXHeader",

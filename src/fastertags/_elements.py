@@ -1,3 +1,4 @@
+import keyword
 import re
 import sys
 from collections.abc import Callable, Collection
@@ -147,7 +148,9 @@ def write(
     path: tuple[str, ...] = (),
 ) -> None:
     for obj in objs:
-        if isinstance(obj, str):
+        if isinstance(obj, NoEscape):
+            f.write(obj)
+        elif isinstance(obj, str):
             f.write(htmlspecialchars(obj) if escape_html else obj)
         elif isinstance(obj, HTMLElement):
             obj.print(f, oob_handler=oob_handler, end="", path=path)
@@ -157,12 +160,24 @@ def write(
             oob_handler(obj)
 
 
-type Content = HTMLElement | str | Iterable[Content] | Header | HTTPStatus
+class NoEscape(str):
+    pass
+
+
+type Content = HTMLElement | str | NoEscape | Iterable[Content] | Header | HTTPStatus
 type SpecificContent[T] = T | Iterable[SpecificContent[T]] | Header | HTTPStatus
 type Renderable = HTMLElement | str | Iterable[Renderable]
 
+_REPR_TR: Final = str.maketrans({"_": "-"})
+
 
 class HTMLElement:
+    __slots__ = (
+        "_attvals",
+        "_content",
+        "_onevent",
+    )
+
     EVENT_HANDLER_PREFIX = "hx-on:"
     MINIMIZE_CSS = True
 
@@ -185,6 +200,44 @@ class HTMLElement:
     def __str__(self) -> str:
         ios = StringIO()
         self.print(ios, end="")
+        return ios.getvalue()
+
+    def __repr__(self) -> str:
+        ios = StringIO()
+        ios.write(f"{self.TAG}_" if keyword.iskeyword(self.TAG) else self.TAG)
+        parentheses_written = False
+        if self._attvals:
+            parentheses_written = True
+            ios.write("(")
+            attrs = []
+            for k, v in self._attvals.items():
+                k = k.translate(_REPR_TR)
+                if keyword.iskeyword(k):
+                    k = f"{k}_"
+                v = repr(v)
+                attrs.append(f"{k}={v}")
+            ios.write(", ".join(attrs))
+            ios.write(")")
+        if self._onevent:
+            if not parentheses_written:
+                ios.write("()")
+                parentheses_written = True
+            for k, v in self._onevent.items():
+                ios.write(".on(")
+                ios.write(repr(k))
+                ios.write(", ")
+                ios.write(repr(v[0]))
+                ios.write(")")
+        if self._content:
+            parentheses_written = True
+            ios.write("(")
+            conts = []
+            for item in self._content:
+                conts.append(repr(item))
+            ios.write(", ".join(conts))
+            ios.write(")")
+        if not parentheses_written:
+            ios.write("()")
         return ios.getvalue()
 
     def print(

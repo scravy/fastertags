@@ -1,16 +1,16 @@
 from collections.abc import Collection
 from typing import Literal
 
+from . import elements as el
 from ._elements import HTMLElement, Content
-from .elements import meta, script, html, head, title as _title, body as _body
 
 
-def viewport(v: str, /) -> meta:
-    return meta(name="viewport", content=v)
+def viewport(v: str, /) -> el.meta:
+    return el.meta(name="viewport", content=v)
 
 
-def charset(v: str, /) -> meta:
-    return meta(charset=v)
+def charset(v: str, /) -> el.meta:
+    return el.meta(charset=v)
 
 
 type HTMXFlag = Literal[
@@ -28,8 +28,8 @@ type HTMXFlag = Literal[
 ]
 
 
-def htmxflag(flag: HTMXFlag, value: bool) -> script:
-    return script(f"htmx.config.{flag} = {'true' if value else 'false'};")
+def htmxflag(flag: HTMXFlag, value: bool) -> el.script:
+    return el.script(f"htmx.config.{flag} = {'true' if value else 'false'};")
 
 
 def document(
@@ -43,18 +43,18 @@ def document(
     initial_scale: float = 1.0,
     viewport_fit: str = "cover",
 ) -> HTMLElement:
-    return html(
+    return el.html(
         lang=lang,
         dir=direction,
     )(
-        head(
-            _title(title),
+        el.head(
+            el.title(title),
             charset("utf8"),
             viewport(
                 f"width={viewport_width}, initial-scale={initial_scale}, viewport-fit={viewport_fit}"
             ),
-            *(script(src=src) for src in script_sources),
+            *(el.script(src=src) for src in script_sources),
             htmxflag("selfRequestsOnly", False),
         ),
-        _body(body),
+        el.body(body),
     )

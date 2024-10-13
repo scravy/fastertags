@@ -37,10 +37,14 @@ serializes event-handler `on*` attributes as `hx-on:*`, for example `hx-on:click
 This can be changed by setting `HTMLElement.EVENT_HANDLER_PREFIX`:
 
 ```
-print(h.h1().on("click", "alert('clicked')")("Title"))
+doc = h.h1().on("click", "alert('clicked')")("Title")
+
+print(doc)
 # <h1 hx-on:click="alert('clicked')">Title</h1>
+
 h.HTMLElement.EVENT_HANDLER_PREFIX= "on"
-print(h.h1().on("click", "alert('clicked')")("Title"))
+
+print(doc)
 # <h1 onclick="alert('clicked')">Title</h1>
 ```
 

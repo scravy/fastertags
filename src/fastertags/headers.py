@@ -1,4 +1,6 @@
 class Header:
+    __slots__ = ("_value",)
+
     key = ""
 
     def __init__(self, value: str) -> None:
@@ -14,6 +16,9 @@ class Header:
 
 class ContentType(Header):
     key = "Content-Type"
+
+
+# ---- HTMX Headers as per https://htmx.org/reference/#response_headers ----
 
 
 class HTMXHeader(Header):

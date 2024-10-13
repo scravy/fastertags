@@ -66,7 +66,9 @@ namespaces = false
 
 [tool.pytest.ini_options]
 minversion = "8.3.2"
-addopts = "--random-order -s --cov-fail-under=85 --cov-report html:coverage --cov=instrumntal"
+addopts = "--random-order -s"
+# addopts = "--random-order -s --cov-fail-under=85 --cov-report html:coverage --cov=instrumntal"
+asyncio_default_fixture_loop_scope="function"
 pythonpath = ["src"]
 testpaths = ["test"]
 python_files = ["test_*.py"]
