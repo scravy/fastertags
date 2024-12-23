@@ -12,7 +12,7 @@ requires-python = ">=3.12"
 authors = [
   { name="Julian Bertram", email="tirednesscankill@warhog.net" },
 ]
-description = ""
+description = "An HTML tag library."
 readme = "README.md"
 classifiers = [
     "Programming Language :: Python :: 3",
