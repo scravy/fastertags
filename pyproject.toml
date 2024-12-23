@@ -1,18 +1,18 @@
 [build-system]
 requires = [
-    "setuptools >= 75.1.0",
-    "wheel >= 0.44.0",
+    "setuptools >= 75.6.0",
+    "wheel >= 0.45.1",
 ]
 build-backend = "setuptools.build_meta"
 
 [project]
-version = "0.2024.10"
+version = "0.2024.11"
 name = "fastertags"
 requires-python = ">=3.12"
 authors = [
   { name="Julian Bertram", email="tirednesscankill@warhog.net" },
 ]
-description = "A small example package"
+description = ""
 readme = "README.md"
 classifiers = [
     "Programming Language :: Python :: 3",

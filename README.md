@@ -26,8 +26,9 @@ yields
 ```
 
 Tags and Attributes are scraped from the WHATWG HTML Spec
-at [https://html.spec.whatwg.org/](https://html.spec.whatwg.org/).  Version numbers reflect when the scraping was done,
-the current version `0.2024.10` was taken in October 2024.
+at [https://html.spec.whatwg.org/](https://html.spec.whatwg.org/).
+Version numbers reflect when the scraping was done,
+the current version `0.2024.11` was taken in December 2024.
 
 ## HTMX
 
